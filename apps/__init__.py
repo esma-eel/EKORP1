@@ -27,7 +27,6 @@ def create_app(config_class=None):
         __name__, template_folder="_templates", static_folder="_statics"
     )
     app.config.from_object(config_class)
-    print(app.config["PROD_DATABASE_URL"])
     register_blueprints(app)
 
     return app
