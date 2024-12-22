@@ -14,6 +14,14 @@
     </title>
 </head>
 <body>
+<ul>
+    <li><a href="{{ url_for('pages.index') }}">Home</a></li>
+    <li><a href="{{ url_for('auth.login') }}">Login</a></li>
+    <li><a href="{{ url_for('pages.test_login_required') }}">Test Login Required</a></li>
+    <li><a href="{{ url_for('registration.register') }}">Registration</a></li>
+    <li><a href="{{ url_for('auth.logout') }}">Logout</a></li>
+</ul>
+<hr>
     {% with messages = get_flashed_messages() %}
     {% if messages %}
     <ul>

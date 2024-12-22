@@ -38,6 +38,10 @@ def login():
 
 @auth.route("/logout/")
 def logout():
-    logout_user()
-    flash("Logged you out!")
+    if current_user.is_authenticated:
+        logout_user()
+        flash("Logged you out!")
+    else:
+        flash("Did you even login ?")
+
     return redirect(url_for("pages.index"))

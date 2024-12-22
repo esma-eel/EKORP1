@@ -2,8 +2,8 @@ from flask import render_template, flash
 from flask_login import login_required, current_user
 from apps.pages import pages
 
-@pages.route("/")
 @pages.route("/index/")
+@pages.route("/")
 def index():
     return render_template("pages/index.html", title="Test title")
 
