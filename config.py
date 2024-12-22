@@ -1,4 +1,5 @@
 import os
+from datetime import timedelta
 from dotenv import load_dotenv
 
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))
@@ -7,18 +8,31 @@ load_dotenv(env_path)
 
 
 class BaseConfig:
+    # FLASK - Used in WTF too
     SECRET_KEY = os.getenv("SECRET_KEY", "default-secret-key")
-    # DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///app.db")
+
+    # SQL ALCHEMY
+    SQLALCHEMY_DATABASE_URI = os.getenv(
+        "DATABASE_URL",
+        "sqlite:///" + os.path.join(BASE_DIR, "boilerplate_default.db"),
+    )
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
+    SQLALCHEMY_ENGINE_OPTIONS = {
+        "pool_size": 10,
+        "pool_recycle": 3600,
+        "pool_pre_ping": True,
+    }
+
+    # Login
+    REMEMBER_COOKIE_DURATION = timedelta(days=7)
 
 
 class DevelopmentConfig(BaseConfig):
     pass
-    # DATABASE_URL = os.getenv("DEV_DATABASE_URL", "sqlite:///dev.db")
 
 
 class ProductionConfig(BaseConfig):
     pass
-    # DATABASE_URL = os.getenv("PROD_DATABASE_URL", "postgresql://user:pass@localhost/prod_db")
 
 
 def get_config():
