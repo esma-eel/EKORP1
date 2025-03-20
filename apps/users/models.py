@@ -21,11 +21,6 @@ class User(TimestampMixin, UserMixin, db.Model):
     )
     password_hash: so.Mapped[Optional[str]] = so.mapped_column(sa.String(256))
 
-    # couse this is added with flask login i commented it
-    # is_active: so.Mapped[bool] = so.mapped_column(sa.Boolean, default=True)
-    is_staff: so.Mapped[bool] = so.mapped_column(sa.Boolean, default=False)
-    is_superuser: so.Mapped[bool] = so.mapped_column(sa.Boolean, default=False)
-
     def __repr__(self):
         return f"<User {self.username}>"
 
