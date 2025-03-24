@@ -13,7 +13,7 @@ from .forms import LoginForm
 def login():
     if current_user.is_authenticated:
         flash("You are already logged in!")
-        return redirect(url_for("index"))
+        return redirect(url_for("pages.index"))
 
     form = LoginForm()
     if form.validate_on_submit():
