@@ -5,8 +5,10 @@ from urllib.parse import urlsplit
 from apps.extensions import db
 from apps.auth import auth
 from apps.users.models import User
+from apps.utils.email import send_password_reset_email
+from apps.utils.tokens import verify_reset_password_token
 
-from .forms import LoginForm
+from .forms import LoginForm, ResetPasswordRequestForm, ResetPasswordForm
 
 
 @auth.route("/login/", methods=["GET", "POST"])
@@ -45,3 +47,44 @@ def logout():
         flash("Did you even login ?")
 
     return redirect(url_for("pages.index"))
+
+
+@auth.route("/reset_password_request/", methods=["GET", "POST"])
+def reset_password_request():
+    if current_user.is_authenticated:
+        return redirect(url_for("pages.index"))
+
+    form = ResetPasswordRequestForm()
+    if form.validate_on_submit():
+        user = db.session.scalar(
+            sa.select(User).where(User.email == form.email.data)
+        )
+        if user:
+            send_password_reset_email(user)
+        flash("Check your email for instructions to reset your password!")
+        return redirect(url_for("auth.login"))
+    return render_template(
+        "auth/reset_password_request.html", title="Reset Password", form=form
+    )
+
+
+@auth.route("/reset_password/<token>/", methods=["GET", "POST"])
+def reset_password(token):
+    if current_user.is_authenticated:
+        return redirect(url_for("pages.index"))
+
+    user = verify_reset_password_token(token)
+    if not user:
+        return redirect(url_for("pages.index"))
+
+    form = ResetPasswordForm()
+    if form.validate_on_submit():
+        user.set_password(form.password.data)
+        db.session.commit()
+        flash("Your password has been reset!")
+        return redirect(url_for("auth.login"))
+    return render_template(
+        "auth/reset_password.html",
+        title="Reset Password",
+        form=form,
+    )

@@ -34,6 +34,14 @@ class BaseConfig:
     # this is for flask itself
     PERMANENT_SESSION_LIFETIME = timedelta(days=7)
 
+    # flask mail
+    MAIL_SERVER = os.getenv("MAIL_SERVER")
+    MAIL_PORT = int(os.getenv("MAIL_PORT") or 25)
+    MAIL_USE_TLS = int(os.getenv("MAIL_USE_TLS") or 0)
+    MAIL_USERNAME = os.getenv("MAIL_USERNAME")
+    MAIL_PASSWORD = os.getenv("MAIL_PASSWORD")
+    ADMINS = ["test@ekorp1.ig"]
+
 
 class DevelopmentConfig(BaseConfig):
     pass

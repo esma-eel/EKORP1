@@ -12,7 +12,7 @@ from apps.mixins.timestamps import TimestampMixin
 
 # to prevent circular import only import when type hinting
 if TYPE_CHECKING:
-    from profiles.models import UserProfile
+    from apps.profiles.models import UserProfile
 
 
 class User(TimestampMixin, UserMixin, db.Model):
