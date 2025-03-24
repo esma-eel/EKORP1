@@ -1,5 +1,5 @@
 from flask import render_template, flash, redirect, url_for, request
-from flask_login import current_user, login_user, logout_user
+from flask_login import current_user, login_user, logout_user, login_required
 import sqlalchemy as sa
 from urllib.parse import urlsplit
 from apps.extensions import db
@@ -8,7 +8,12 @@ from apps.users.models import User
 from apps.utils.email import send_password_reset_email
 from apps.utils.tokens import verify_reset_password_token
 
-from .forms import LoginForm, ResetPasswordRequestForm, ResetPasswordForm
+from .forms import (
+    LoginForm,
+    ResetPasswordRequestForm,
+    ResetPasswordForm,
+    ChangePasswordForm,
+)
 
 
 @auth.route("/login/", methods=["GET", "POST"])
@@ -87,4 +92,29 @@ def reset_password(token):
         "auth/reset_password.html",
         title="Reset Password",
         form=form,
+    )
+
+
+@auth.route("/change_password/", methods=["GET", "POST"])
+@login_required
+def change_password():
+    form = ChangePasswordForm()
+    if form.validate_on_submit():
+        if form.password.data == form.current_password.data:
+            form.password.errors.append(
+                "Your new password and current password are the same! change it plz"
+            )
+        elif current_user.check_password(form.current_password.data):
+            current_user.set_password(form.password.data)
+            db.session.commit()
+            flash("Your password has been changed!")
+            logout_user()
+            return redirect(url_for("auth.login"))
+        else:
+            form.current_password.errors.append(
+                "Check your current password again!"
+            )
+
+    return render_template(
+        "auth/change_password.html", title="Change Password", form=form
     )
