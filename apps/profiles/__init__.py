@@ -6,3 +6,4 @@ profiles = Blueprint(
 
 
 from apps.profiles import models
+from apps.profiles import routes
