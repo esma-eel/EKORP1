@@ -10,6 +10,7 @@ from apps.mixins.timestamps import TimestampMixin
 # to prevent circular import only import when type hinting
 if TYPE_CHECKING:
     from apps.users.models import User
+    from apps.groups.models import GroupMembership
 
 
 class UserProfile(TimestampMixin, db.Model):
@@ -30,3 +31,8 @@ class UserProfile(TimestampMixin, db.Model):
         sa.ForeignKey("users.id"), unique=True
     )
     user: so.Mapped["User"] = db.relationship(back_populates="profile")
+
+    # N:N
+    group_memberships: so.Mapped[list["GroupMembership"]] = db.relationship(
+        back_populates="profile"
+    )
