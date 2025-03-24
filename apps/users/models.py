@@ -1,5 +1,5 @@
 from datetime import datetime, timezone
-from typing import Optional
+from typing import Optional, TYPE_CHECKING
 
 import sqlalchemy as sa
 import sqlalchemy.orm as so
@@ -10,8 +10,14 @@ from apps.extensions import db
 from apps.mixins.timestamps import TimestampMixin
 
 
+# to prevent circular import only import when type hinting
+if TYPE_CHECKING:
+    from profiles.models import UserProfile
+
+
 class User(TimestampMixin, UserMixin, db.Model):
     __tablename__ = "users"
+    # user fields
     id: so.Mapped[int] = so.mapped_column(primary_key=True)
     username: so.Mapped[str] = so.mapped_column(
         sa.String(64), index=True, unique=True
@@ -21,10 +27,11 @@ class User(TimestampMixin, UserMixin, db.Model):
     )
     password_hash: so.Mapped[Optional[str]] = so.mapped_column(sa.String(256))
 
-    # couse this is added with flask login i commented it
-    # is_active: so.Mapped[bool] = so.mapped_column(sa.Boolean, default=True)
-    is_staff: so.Mapped[bool] = so.mapped_column(sa.Boolean, default=False)
-    is_superuser: so.Mapped[bool] = so.mapped_column(sa.Boolean, default=False)
+    # foreign keys
+    # 1:1
+    profile: so.Mapped["UserProfile"] = db.relationship(
+        back_populates="user", uselist=False
+    )
 
     def __repr__(self):
         return f"<User {self.username}>"

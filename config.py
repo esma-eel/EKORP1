@@ -14,8 +14,11 @@ class BaseConfig:
     # SQL ALCHEMY
     SQLALCHEMY_DATABASE_URI = os.getenv(
         "DATABASE_URL",
-        "sqlite:///" + os.path.join(BASE_DIR, "boilerplate_default.db"),
+        "sqlite:///" + os.path.join(BASE_DIR, "ekorp1_default.db"),
     )
+    # this variable is for tracking changes of CRUD on objects
+    # it has overhead on system so many people recommed to turn it off
+    # and i do it too
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     SQLALCHEMY_ENGINE_OPTIONS = {
         "pool_size": 10,
@@ -24,7 +27,12 @@ class BaseConfig:
     }
 
     # Login
+    # this options are for remember me part in login page
+    # this is for flask-login
     REMEMBER_COOKIE_DURATION = timedelta(days=7)
+    # this is in case above options was buggy and did not work
+    # this is for flask itself
+    PERMANENT_SESSION_LIFETIME = timedelta(days=7)
 
 
 class DevelopmentConfig(BaseConfig):
