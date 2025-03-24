@@ -1,5 +1,11 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField, DateField, SelectField, TextAreaField
+from wtforms import (
+    StringField,
+    SubmitField,
+    DateField,
+    SelectField,
+    TextAreaField,
+)
 from wtforms.validators import DataRequired, Length, Regexp, Optional
 
 
@@ -18,4 +24,5 @@ class UserProfileForm(FlaskForm):
         "Birth Date", validators=[DataRequired()], format="%Y-%m-%d"
     )
     address = TextAreaField("Address", validators=[Optional(), Length(max=256)])
+    role_group = SelectField("Role Group", choices=[])
     submit = SubmitField("Save")
