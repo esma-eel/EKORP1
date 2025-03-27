@@ -12,6 +12,15 @@
     {% endif %}
     {% endblock title %}
     </title>
+
+    <!-- no dark mode version -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='vendor/bulma/bulma.1.0.2.min.css') }}">
+    <!-- custom styles -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <!-- alpine -->
+    <script src="{{ url_for('static', filename='vendor/alpinejs/alpine.3.4.18.min.js') }}" defer></script>
+    {% block custom_css_links %}{% endblock %}
+    {% block custom_css_styles %}{% endblock %}
 </head>
 <body>
 <ul>
@@ -35,5 +44,8 @@
     {% endif %}
     {% endwith %}
     {% block content %}{% endblock content %}
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    {% block custom_js_srcs %}{% endblock %}
+    {% block custom_js_scripts %}{% endblock %}
 </body>
 </html>
