@@ -6,19 +6,18 @@ import sqlalchemy.orm as so
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
 
-from apps.extensions import db
-from apps.mixins.timestamps import TimestampMixin
+from apps.core.extensions import db
+from apps.core.mixins import Base
 
 
 # to prevent circular import only import when type hinting
 if TYPE_CHECKING:
-    from apps.profiles.models import UserProfile
+    from apps.core.db import UserProfile
 
 
-class User(TimestampMixin, UserMixin, db.Model):
+class User(UserMixin, Base):
     __tablename__ = "users"
     # user fields
-    id: so.Mapped[int] = so.mapped_column(primary_key=True)
     username: so.Mapped[str] = so.mapped_column(
         sa.String(64), index=True, unique=True
     )

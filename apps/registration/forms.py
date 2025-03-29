@@ -1,9 +1,10 @@
 from flask_wtf import FlaskForm
+import sqlalchemy as sa
 from wtforms import StringField, PasswordField, BooleanField, SubmitField
 from wtforms.validators import ValidationError, DataRequired, Email, EqualTo
-import sqlalchemy as sa
-from apps.extensions import db
-from apps.users.models import User
+
+from apps.core.extensions import db
+from apps.core.db import User
 
 
 class RegistrationForm(FlaskForm):

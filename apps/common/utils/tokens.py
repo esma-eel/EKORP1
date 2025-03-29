@@ -1,8 +1,9 @@
 from time import time
 import jwt
 from flask import current_app
-from apps.extensions import db
-from apps.users.models import User
+
+from apps.core.extensions import db
+from apps.core.db import User
 
 
 def generate_token(payload_data):

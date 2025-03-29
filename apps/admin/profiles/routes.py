@@ -1,23 +1,23 @@
 from flask import render_template, flash, redirect, url_for, request
-from flask_login import current_user, login_user, logout_user, login_required
+from flask_login import current_user, login_required
 import sqlalchemy as sa
-from urllib.parse import urlsplit
-from apps.extensions import db
-from apps.profiles import profiles
-from apps.users.models import User
-from apps.utils.groups import (
+
+from apps.core.extensions import db
+from apps.core.db.users import User
+from apps.common.utils.groups import (
     get_groups_name,
     remove_user_from_group,
     add_user_to_group,
     get_users_current_group,
     user_is_member,
 )
-from apps.groups.models import GroupMembership, UserGroup
-from .models import UserProfile
+from apps.core.db import UserProfile, GroupMembership, UserGroup
+
 from .forms import UserProfileForm
+from .. import admin
 
 
-@profiles.route("/profile/<username>/", methods=["GET", "POST"])
+@admin.route("/profile/<username>/", methods=["GET", "POST"])
 @login_required
 def user_profile(username):
     user = db.session.scalar(sa.select(User).where(User.username == username))
@@ -52,7 +52,7 @@ def user_profile(username):
         form.populate_obj(profile)
         db.session.commit()
         flash(f"{username} profile is updated")
-        return redirect(url_for("profiles.user_profile", username=username))
+        return redirect(url_for("admin.user_profile", username=username))
 
     return render_template(
         "profiles/profile_form.html",
