@@ -1,6 +1,8 @@
 from flask import render_template, flash
 from flask_login import login_required, current_user
-from apps.pages import pages
+
+from . import pages
+
 
 @pages.route("/index/")
 @pages.route("/")
@@ -12,4 +14,6 @@ def index():
 @login_required
 def test_login_required():
     flash(f"Hi user {current_user}")
-    return render_template("pages/test-login-required.html", title="login required")
+    return render_template(
+        "pages/test-login-required.html", title="login required"
+    )

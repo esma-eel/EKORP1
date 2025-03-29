@@ -1,9 +1,11 @@
 from flask import redirect, flash, url_for, render_template
 from flask_login import current_user
-from apps.extensions import db
-from apps.users.models import User
-from apps.registration import registration
-from apps.registration.forms import RegistrationForm
+
+from apps.core.extensions import db
+from apps.core.db import User
+
+from .forms import RegistrationForm
+from . import registration
 
 
 @registration.route("/signup/", methods=["GET", "POST"])

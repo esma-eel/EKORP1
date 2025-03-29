@@ -2,11 +2,12 @@ from flask import render_template, flash, redirect, url_for, request
 from flask_login import current_user, login_user, logout_user, login_required
 import sqlalchemy as sa
 from urllib.parse import urlsplit
-from apps.extensions import db
+
+from apps.core.extensions import db
 from apps.auth import auth
-from apps.users.models import User
-from apps.utils.email import send_password_reset_email
-from apps.utils.tokens import verify_reset_password_token
+from apps.core.db.users import User
+from apps.common.utils.email import send_password_reset_email
+from apps.common.utils.tokens import verify_reset_password_token
 
 from .forms import (
     LoginForm,

@@ -1,7 +1,7 @@
 import sqlalchemy as sa
-from apps.extensions import db
+from apps.core.extensions import db
 
-from apps.groups.models import GroupMembership, UserGroup
+from apps.core.db import GroupMembership, UserGroup
 
 
 def get_groups_object():

@@ -3,20 +3,19 @@ from typing import Optional, TYPE_CHECKING
 import sqlalchemy as sa
 import sqlalchemy.orm as so
 
-from apps.extensions import db
-from apps.mixins.timestamps import TimestampMixin
+from apps.core.extensions import db
+from apps.core.mixins import Base
 
 
 # to prevent circular import only import when type hinting
 if TYPE_CHECKING:
-    from apps.users.models import User
-    from apps.groups.models import GroupMembership
+    from apps.core.db import User
+    from apps.core.db import GroupMembership
 
 
-class UserProfile(TimestampMixin, db.Model):
+class UserProfile(Base):
     __tablename__ = "user_profiles"
     # user profile fields
-    id: so.Mapped[int] = so.mapped_column(sa.Integer, primary_key=True)
     name: so.Mapped[Optional[str]] = so.mapped_column(sa.String(64))
     address: so.Mapped[Optional[str]] = so.mapped_column(sa.String(256))
     phone_number: so.Mapped[Optional[str]] = so.mapped_column(sa.String(11))

@@ -1,8 +1,10 @@
 from threading import Thread
 from flask import render_template, current_app
 from flask_mail import Message
-from apps.extensions import mail
-from apps.utils.tokens import get_reset_password_token
+
+from apps.core.extensions import mail
+
+from .tokens import get_reset_password_token
 
 
 def send_async_email(app, msg):

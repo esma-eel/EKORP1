@@ -4,7 +4,7 @@ from importlib import import_module
 from flask import Flask
 from config import get_config
 
-from .extensions import init_extensions
+from .core.extensions import init_extensions
 
 
 def register_blueprints(app):
@@ -25,9 +25,7 @@ def create_app(config_class=None):
     if not config_class:
         config_class = get_config()
 
-    app = Flask(
-        __name__, template_folder="_templates", static_folder="_statics"
-    )
+    app = Flask(__name__, template_folder="templates", static_folder="statics")
     app.config.from_object(config_class)
 
     # initialize extensions
